@@ -1,35 +1,52 @@
-# Made following https://jdhao.github.io/2019/02/23/crop_rotated_rectangle_opencv/
-import numpy as np
+# Made following https://theailearner.com/tag/cv2-warpperspective/
 import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
-img = cv2.imread("./Test Images/Ximenes_Phone.JPG")
-# points for test rectangle
-bound = np.array([               # These coordinates are what we would need to create at first setup
-            [[1420, 1855]],
-            [[1651, 1852]],
-            [[1350, 2043]],
-            [[1616, 2034]]
-        ])
-print("Shape of bound: {}".format(bound.shape))
-rect = cv2.minAreaRect(bound)
-print("rect: {}".format(rect))
+# Ximenes_Phone test spot
+#             [[1420, 1855]],
+#             [[1651, 1852]],
+#             [[1350, 2043]],
+#             [[1616, 2034]]
 
-box = cv2.boxPoints(rect)
-box = np.int0(box)
+# load image
+img = cv2.imread("./Test Images/Ximenes_Phone.jpg")
 
-print("bounding box: {}".format(box))
-cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
+#Create copy of image
+img_copy = np.copy(img)
 
-width = int(rect[1][0])
-height = int(rect[1][1])
+img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2RGB)
 
-src_pts = box.astype("float32")
+# plt.imshow(img_copy)
+# plt.show()
 
-dst_pts = np.array([[0, width-1],
-                   [0, 0],
-                   [height-1, 0],
-                   [height-1, width-1]], dtype="float32")
+pt_A = [1420, 1855]
+pt_B = [1651, 1852]
+pt_C = [1350, 2043]
+pt_D = [1616, 2034]
 
-M = cv2.getPerspectiveTransform(src_pts, dst_pts)
-warped = cv2.warpPerspective(img, M, (width, height))
-cv2.imwrite("test_output.JPG", warped)
+# Find the width and height
+width_AD = np.sqrt(((pt_A[0] - pt_D[0]) ** 2) + ((pt_A[1] - pt_D[1]) ** 2))
+width_BC = np.sqrt(((pt_B[0] - pt_C[0]) ** 2) + ((pt_B[1] - pt_C[1]) ** 2))
+maxWidth = max(int(width_AD), int(width_BC))
+
+height_AB = np.sqrt(((pt_A[0] - pt_B[0]) ** 2) + ((pt_A[1] - pt_B[1]) ** 2))
+height_CD = np.sqrt(((pt_C[0] - pt_D[0]) ** 2) + ((pt_C[1] - pt_D[1]) ** 2))
+maxHeight = max(int(height_AB), int(height_CD))
+
+# specify point mapping; top left, top right, bottom left, bottom right
+
+input_pts = np.float32([pt_A, pt_C, pt_D, pt_B])
+output_pts = np.float32([[0, 0],
+                         [0, maxHeight - 1],
+                         [maxWidth - 1, maxHeight - 1],
+                         [maxWidth - 1, 0]])
+
+#compute transform matrix M
+M = cv2.getPerspectiveTransform(input_pts, output_pts)
+
+out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
+
+plt.imshow(out)
+plt.show()
+cv2.imwrite("test_output_cv2.JPG", out)
