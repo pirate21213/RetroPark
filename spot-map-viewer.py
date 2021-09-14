@@ -1,16 +1,25 @@
 import cv2
 import csv
+import argparse
+
+# Set up argparse to input the image file location and spot location data
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--image", required=True, help="Path to the image")
+ap.add_argument("-d", "--data", required=True, help=".csv file that includes the spot location data")
+args = vars(ap.parse_args())
 
 # Open the .csv and load their locations into data list
 # FORMAT
 # spotID, tL_x, tL_y, bL_x, bL_y, bR_x, bR_y, tR_x, tR_y
-with open("spot_locations.csv", newline="") as f:
+with open(args["data"], newline="") as f:
     data = list(csv.reader(f))
+print("Loaded Spot Location Data:")
+print(data)
 
 
 # Load the image and whatnot (Hardcoded for testing)
-image = cv2.imread("./Test Images/Ximenes_Phone.JPG")
-# image = cv2.imread(args["image"])
+# image = cv2.imread("./Test Images/Ximenes_Phone.JPG")
+image = cv2.imread(args["image"])
 scale_percent = 20  # percent of original size
 width = int(image.shape[1] * scale_percent / 100)
 height = int(image.shape[0] * scale_percent / 100)
@@ -28,7 +37,6 @@ for d in data:
         d[i] = int(d[i])
         if i != 0:
             d[i] = int(d[i] * scale_percent / 100)
-print(data)
 
 for d in data:
     # Place lines for each spot
@@ -40,14 +48,11 @@ for d in data:
     # Place identifier in the middle of the spot by way of averages
     tX = int((d[1]+d[3]+d[5]+d[7]) / 4)
     tY = int((d[2]+d[4]+d[6]+d[8]) / 4)
-    image = cv2.putText(image, "#%d" % d[0], (tX - 20, tY), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1,
+    image = cv2.putText(image, "#%d" % d[0], (tX - 10, tY), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1,
                         cv2.LINE_AA)
 
-    # Flip spot color
-    if spot_color == red:
-        spot_color = blue
-    else:
-        spot_color = red
+    # Swap color between blue and red for readability
+    spot_color = red if spot_color == blue else blue
 
 
 while True:
