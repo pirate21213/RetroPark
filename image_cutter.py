@@ -28,7 +28,7 @@ maxHeight = 640
 #             [[2326, 1843]]
 
 # load image
-img = cv2.imread("./Test Images/Ximenes_Phone.JPG", cv2.IMREAD_GRAYSCALE)  #0 reads in as grayscale
+img = cv2.imread("./Test Images/Ximenes_Phone.jpg", cv2.IMREAD_GRAYSCALE)  #0 reads in as grayscale
 
 plt.imshow(img, cmap="gray", vmin=0, vmax=255)
 plt.show()
