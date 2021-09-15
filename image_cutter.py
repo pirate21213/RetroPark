@@ -2,123 +2,51 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
+import csv
+from datetime import datetime
+
+# Set up argparse to input the image file location and spot location data
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--image", required=True, help="Path to the image")
+ap.add_argument("-d", "--data", required=True, help=".csv file that includes the spot location data")
+ap.add_argument("-f", "--folder", required=True, help="Folder path to place generated images such as '.\Output'")
+args = vars(ap.parse_args())
 
 maxWidth = 320
 maxHeight = 640
 
-# Ximenes_Phone test spot 1 (Unoccupied)
-#             [[1420, 1855]],
-#             [[1651, 1852]],
-#             [[1350, 2043]],
-#             [[1616, 2034]]
-# Ximenes_Phone test spot 2 (Unoccupied)
-#             [[2820, 1464]],
-#             [[2957, 1466]],
-#             [[2894, 1549]],
-#             [[3069, 1549]]
-# Ximenes_Phone test spot 3 (Occupied)
-#             [[2098, 1847]],
-#             [[2326, 1844]],
-#             [[2137, 2026]],
-#             [[2398, 2024]]
-# Ximenes_Phone test spot 4 (Partial Occlusion - Unoccupied)
-#             [[2075, 1706]],
-#             [[2270, 1707]],
-#             [[2099, 1847]],
-#             [[2326, 1843]]
-
 # load image
-img = cv2.imread("./Test Images/Ximenes_Phone.jpg", cv2.IMREAD_GRAYSCALE)  #0 reads in as grayscale
+# img = cv2.imread("./Test Images/Ximenes_Phone.jpg", cv2.IMREAD_GRAYSCALE)  #0 reads in as grayscale
+img = cv2.imread(args["image"], cv2.IMREAD_GRAYSCALE)
 
 plt.imshow(img, cmap="gray", vmin=0, vmax=255)
 plt.show()
 
-# The following can/should be reduced into a series of for loops
+# Open the .csv and load their locations into data list
+# FORMAT
+# spotID, tL_x, tL_y, bL_x, bL_y, bR_x, bR_y, tR_x, tR_y
+with open(args["data"], newline="") as f:
+    data = list(csv.reader(f))
+print("Loaded Spot Location Data:")
+print(data)
 
-pt_A = [1420, 1855]
-pt_B = [1651, 1852]
-pt_C = [1350, 2043]
-pt_D = [1616, 2034]
+# Create timestamp
+time = datetime.now().strftime("%H_%M_%S")
 
-# specify point mapping; I did top left, top right, bottom left, bottom right; input wants top left counter clockwise
-input_pts = np.float32([pt_A, pt_C, pt_D, pt_B])
-output_pts = np.float32([[0, 0],
-                         [0, maxHeight - 1],
-                         [maxWidth - 1, maxHeight - 1],
-                         [maxWidth - 1, 0]])
+for d in data:
+    # Label current spot
+    spotID = d[0]
+    # specify point mapping
+    input_pts = np.float32([(d[1], d[2]), (d[3], d[4]), (d[5], d[6]), (d[7], d[8]), ])
+    output_pts = np.float32([[0, 0],
+                             [0, maxHeight - 1],
+                             [maxWidth - 1, maxHeight - 1],
+                             [maxWidth - 1, 0]])
+    # compute transform matrix M
+    M = cv2.getPerspectiveTransform(input_pts, output_pts)
+    out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
 
-# compute transform matrix M
-M = cv2.getPerspectiveTransform(input_pts, output_pts)
-
-out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
-
-plt.imshow(out, cmap="gray", vmin=0, vmax=255)
-plt.show()
-cv2.imwrite("test_output_warped_1.JPG", out)
-
-pt_A = [2820, 1464]
-pt_B = [2957, 1466]
-pt_C = [2894, 1549]
-pt_D = [3069, 1549]
-
-# specify point mapping; I did top left, top right, bottom left, bottom right; input wants top left counter clockwise
-input_pts = np.float32([pt_A, pt_C, pt_D, pt_B])
-output_pts = np.float32([[0, 0],
-                         [0, maxHeight - 1],
-                         [maxWidth - 1, maxHeight - 1],
-                         [maxWidth - 1, 0]])
-
-# compute transform matrix M
-M = cv2.getPerspectiveTransform(input_pts, output_pts)
-
-out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
-
-plt.imshow(out, cmap="gray", vmin=0, vmax=255)
-plt.show()
-cv2.imwrite("test_output_warped_2.JPG", out)
-
-pt_A = [2098, 1847]
-pt_B = [2326, 1844]
-pt_C = [2137, 2026]
-pt_D = [2398, 2024]
-
-# specify point mapping; I did top left, top right, bottom left, bottom right; input wants top left counter clockwise
-input_pts = np.float32([pt_A, pt_C, pt_D, pt_B])
-output_pts = np.float32([[0, 0],
-                         [0, maxHeight - 1],
-                         [maxWidth - 1, maxHeight - 1],
-                         [maxWidth - 1, 0]])
-
-# compute transform matrix M
-M = cv2.getPerspectiveTransform(input_pts, output_pts)
-
-out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
-
-plt.imshow(out, cmap="gray", vmin=0, vmax=255)
-plt.show()
-cv2.imwrite("test_output_warped_3.JPG", out)
-
-pt_A = [2075, 1706]
-pt_B = [2270, 1707]
-pt_C = [2099, 1847]
-pt_D = [2326, 1843]
-
-# specify point mapping; I did top left, top right, bottom left, bottom right; input wants top left counter clockwise
-input_pts = np.float32([pt_A, pt_C, pt_D, pt_B])
-output_pts = np.float32([[0, 0],
-                         [0, maxHeight - 1],
-                         [maxWidth - 1, maxHeight - 1],
-                         [maxWidth - 1, 0]])
-
-# compute transform matrix M
-M = cv2.getPerspectiveTransform(input_pts, output_pts)
-
-out = cv2.warpPerspective(img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
-
-plt.imshow(out, cmap="gray", vmin=0, vmax=255)
-plt.show()
-cv2.imwrite("test_output_warped_4.JPG", out)
-#             [[2075, 1706]],
-#             [[2270, 1707]],
-#             [[2099, 1847]],
-#             [[2326, 1843]]
+    # plt.imshow(out, cmap="gray", vmin=0, vmax=255)
+    # plt.show()
+    cv2.imwrite("%s\\%s_%s.jpg" % (args["folder"], spotID, time), out)
