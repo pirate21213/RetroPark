@@ -48,7 +48,7 @@ for d in data:
     # Place identifier in the middle of the spot by way of averages
     tX = int((d[1]+d[3]+d[5]+d[7]) / 4)
     tY = int((d[2]+d[4]+d[6]+d[8]) / 4)
-    image = cv2.putText(image, "#%d" % d[0], (tX - 10, tY), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1,
+    image = cv2.putText(image, "#%d" % d[0], (tX - 10, tY), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 0), 1,
                         cv2.LINE_AA)
 
     # Swap color between blue and red for readability

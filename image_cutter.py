@@ -50,3 +50,4 @@ for d in data:
     # plt.imshow(out, cmap="gray", vmin=0, vmax=255)
     # plt.show()
     cv2.imwrite("%s\\%s_%s.jpg" % (args["folder"], spotID, time), out)
+    print("%s\\%s_%s.jpg" % (args["folder"], spotID, time))
