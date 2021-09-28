@@ -22,22 +22,26 @@ if not os.path.exists(os.path.join(args["output_folder"], "occ")):
 if not os.path.exists(os.path.join(args["output_folder"], "nocc")):
     os.makedirs(nocc)
 
+# Create lists for images and their spotIDs
 images = []
-spot_ID = [] # Pulls the spotID from the image name for later label use
+spot_ID = []  # Pulls the spotID from the image name for later label use
+
+# Looks at entire input folder and loads images into list using cv2
 for file in glob.glob("{}*.jpg".format(args["input_folder"])):
     images.append(cv2.imread(file))
-    p = re.findall(r'\d+', str(file))
-    spot_ID.append(p[0])
-print(spot_ID)
+    p = re.findall(r'\d+', str(file))   # grabs the spotID from the image name (the first digit before _ is the ID)
+    spot_ID.append(p[0])                # p is a list of all the digits in the name, this appends just the first one
 
 # Create timestamp
 time = datetime.now().strftime("%H_%M_%S")
 
 for i in range(0, len(images)):
     while True:
+        # display the image
         cv2.namedWindow("[U]noccupied or [O]ccupied")
         cv2.imshow("[U]noccupied or [O]ccupied", images[i])
 
+        # Wait for a keypress to figure out what to do with the image, q closes the program
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             quit()
