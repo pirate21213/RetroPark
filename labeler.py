@@ -32,12 +32,10 @@ for file in glob.glob("{}*.jpg".format(args["input_folder"])):
     filename = str(file).replace(args["input_folder"], '')
     p = re.findall(r'\d+', filename)   # grabs the spotID from the image name (the first digit before _ is the ID)
     spot_ID.append(p[0])                # p is a list of all the digits in the name, this appends just the first one
-    print(p[0])
-
-# Create timestamp
-time = datetime.now().strftime("%H_%M_%S")
 
 for i in range(0, len(images)):
+    # Create timestamp
+    time = datetime.now().strftime("%H_%M_%S")
     while True:
         # display the image
         cv2.namedWindow("[U]noccupied or [O]ccupied")
