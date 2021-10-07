@@ -29,7 +29,8 @@ spot_ID = []  # Pulls the spotID from the image name for later label use
 # Looks at entire input folder and loads images into list using cv2
 for file in glob.glob("{}*.jpg".format(args["input_folder"])):
     images.append(cv2.imread(file))
-    p = re.findall(r'\d+', str(file))   # grabs the spotID from the image name (the first digit before _ is the ID)
+    filename = str(file).replace(args["input_folder"], '')
+    p = re.findall(r'\d+', filename)   # grabs the spotID from the image name (the first digit before _ is the ID)
     spot_ID.append(p[0])                # p is a list of all the digits in the name, this appends just the first one
     print(p[0])
 
