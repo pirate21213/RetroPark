@@ -1,5 +1,5 @@
 # Display a sequential list of images, label and sort them into appropriate folders
-# DEMO: python .\labeler.py -i .\Output\ -o .\SortTest\Sorted\
+# DEMO: python .\labeler.py -i .\Processed Images\ -o .\SortTest\Sorted\
 
 import glob
 import os
