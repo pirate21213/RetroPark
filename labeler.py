@@ -31,6 +31,7 @@ for file in glob.glob("{}*.jpg".format(args["input_folder"])):
     images.append(cv2.imread(file))
     p = re.findall(r'\d+', str(file))   # grabs the spotID from the image name (the first digit before _ is the ID)
     spot_ID.append(p[0])                # p is a list of all the digits in the name, this appends just the first one
+    print(p[0])
 
 # Create timestamp
 time = datetime.now().strftime("%H_%M_%S")

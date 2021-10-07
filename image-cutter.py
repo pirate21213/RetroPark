@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import csv
+import os
 from datetime import datetime
 
 # Set up argparse to input the image file location and spot location data
@@ -12,6 +13,11 @@ ap.add_argument("-i", "--image", required=True, help="Path to the image")
 ap.add_argument("-d", "--data", required=True, help=".csv file that includes the spot location data")
 ap.add_argument("-f", "--folder", required=True, help="Folder path to place generated images such as '.\Output'")
 args = vars(ap.parse_args())
+
+# Make output folder
+if not os.path.exists(args["folder"]):
+    print("Creating output folder...")
+    os.makedirs(args["folder"])
 
 maxWidth = 320
 maxHeight = 640

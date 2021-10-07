@@ -13,8 +13,8 @@ args = vars(ap.parse_args())
 # spotID, tL_x, tL_y, bL_x, bL_y, bR_x, bR_y, tR_x, tR_y
 with open(args["data"], newline="") as f:
     data = list(csv.reader(f))
-print("Loaded Spot Location Data:")
-print(data)
+# print("Loaded Spot Location Data:")
+# print(data)
 
 
 # Load the image and whatnot (Hardcoded for testing)
