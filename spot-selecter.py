@@ -97,7 +97,7 @@ while True:
         # Swap color between blue and red for readability
         spot_color = red if spot_color == blue else blue
 
+
     # Break from the loop and do the stuff, probably going to change this flow
     elif key == ord("q"):
-
         break
