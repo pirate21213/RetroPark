@@ -247,6 +247,8 @@ def test_persona(image_path, persona, class_names):
     cv2.imshow("This is what {} saw.".format(persona), disp)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    if os.path.exists('./temp'):
+        shutil.rmtree('./temp')
 
 
 def create_model():
