@@ -6,10 +6,7 @@ from streamlit_folium import folium_static
 import folium
 from PIL import Image
 
-st.set_page_config(page_title="RetroPark - CIED EE/CpE Senior Design Team 5",
-                   page_icon="./Front End Display/RetroPark_Logo.png", menu_items={'Get Help': None,
-                                                                                   'Report a bug': None,
-                                                                                   'About': None})
+st.set_page_config(page_title="RetroPark - CIED EE/CpE Senior Design Team 5", page_icon="./Front End Display/RetroPark_Logo.png", menu_items={'Get Help': None,'Report a bug': None,'About': None})
 
 
 # Data update code g
