@@ -1,10 +1,12 @@
 import time
-
+import os
 import numpy as np
 import tensorflow as tf
 
+tf.get_logger().setLevel('ERROR')
 
-def detect_occupancy(image_path):
+
+def detect_occupancy(image_path, debug=False):
     start_time = time.time()
     from persona_trainer import create_model
     class_names = ['nocc', 'occ']
@@ -32,19 +34,19 @@ def detect_occupancy(image_path):
     predictions = [tom_probability.predict(img_array), jerry_probability.predict(img_array),
                    tweety_probability.predict(img_array)]
     score = [tf.nn.softmax(predictions[0][0]), tf.nn.softmax(predictions[1][0]), tf.nn.softmax(predictions[2][0])]
-
-    print(
-        "Tom thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
-            class_names[np.argmax(score[0])], 100 * np.max(score[0]), class_names[np.argmin(score[0])],
-            100 * np.min(score[0])))
-    print(
-        "Jerry thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
-            class_names[np.argmax(score[1])], 100 * np.max(score[1]), class_names[np.argmin(score[1])],
-            100 * np.min(score[1])))
-    print(
-        "Tweety thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
-            class_names[np.argmax(score[2])], 100 * np.max(score[2]), class_names[np.argmin(score[2])],
-            100 * np.min(score[2])))
+    if debug:
+        print(
+            "Tom thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+                class_names[np.argmax(score[0])], 100 * np.max(score[0]), class_names[np.argmin(score[0])],
+                                                  100 * np.min(score[0])))
+        print(
+            "Jerry thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+                class_names[np.argmax(score[1])], 100 * np.max(score[1]), class_names[np.argmin(score[1])],
+                                                  100 * np.min(score[1])))
+        print(
+            "Tweety thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+                class_names[np.argmax(score[2])], 100 * np.max(score[2]), class_names[np.argmin(score[2])],
+                                                  100 * np.min(score[2])))
 
     # Address the quorum for the final result
     # score[0] is nocc | score[1] is occ
@@ -57,11 +59,13 @@ def detect_occupancy(image_path):
 
     if tug > 0:
         judgement = 'nocc'
-        confidence = np.sum(quorum_scores[0])/3
+        confidence = np.sum(quorum_scores[0]) / 3
     else:
         judgement = 'occ'
-        confidence = np.sum(quorum_scores[1])/3
-
-    print("The quorum thinks that the spot is {} with a combined confidence of {:.2f}%. The tug is {:.4f}".format(judgement, confidence*100, tug))
-    print('occupancy detection took %s seconds to run' % (time.time() - start_time))
-    return judgement, confidence, tug
+        confidence = np.sum(quorum_scores[1]) / 3
+    think_time = time.time() - start_time
+    if debug:
+        print("The quorum thinks that the spot is {} with a combined confidence of {:.2f}%. The tug is {:.4f}".format(
+            judgement, confidence * 100, tug))
+        print('occupancy detection took %s seconds to run' % (time.time() - start_time))
+    return judgement, confidence, tug, think_time
