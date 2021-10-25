@@ -36,20 +36,28 @@ def detect_occupancy(image_path, debug=False):
     score = [tf.nn.softmax(predictions[0][0]), tf.nn.softmax(predictions[1][0]), tf.nn.softmax(predictions[2][0])]
     if debug:
         print(
-            "Tom thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+            "Tom thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} "
+            "percent confidence.".format(
                 class_names[np.argmax(score[0])], 100 * np.max(score[0]), class_names[np.argmin(score[0])],
                                                   100 * np.min(score[0])))
+
         print(
-            "Jerry thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+            "Jerry thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} "
+            "percent confidence.".format(
                 class_names[np.argmax(score[1])], 100 * np.max(score[1]), class_names[np.argmin(score[1])],
                                                   100 * np.min(score[1])))
         print(
-            "Tweety thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} percent confidence.".format(
+            "Tweety thinks that this image most likely belongs to {} with a {:.2f} percent confidence. {} had {:.2f} "
+            "percent confidence.".format(
                 class_names[np.argmax(score[2])], 100 * np.max(score[2]), class_names[np.argmin(score[2])],
                                                   100 * np.min(score[2])))
 
+    tom_conf = 100 * np.max(score[0])
+    jerry_conf = 100 * np.max(score[1])
+    tweety_conf = 100 * np.max(score[2])
+
     # Address the quorum for the final result
-    # score[0] is nocc | score[1] is occ
+    # score[x][0] is nocc | score[x][1] is occ
     quorum_scores = [score[0][0] + score[1][0] + score[2][0], score[0][1] + score[1][1] + score[2][1]]
     judgement = ''
 
@@ -70,4 +78,4 @@ def detect_occupancy(image_path, debug=False):
     # Convert tug from a tensor to a float
     scalar_tug = tug.numpy()
 
-    return judgement, confidence, scalar_tug, think_time
+    return judgement, confidence, scalar_tug, think_time, tom_conf, jerry_conf, tweety_conf

@@ -12,6 +12,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 print("Tensorflow version:", tf.__version__)
 
@@ -75,6 +76,7 @@ def train_model(persona):
             n = cv2.imread(image)
             n = edgify_image(n)
             cv2.imwrite(os.path.join("./temp/nocc", os.path.basename(image)), n)
+            print(os.path.join("./temp/occ", os.path.basename(image)))
 
         # Override Jerry's datapath to be the canny edge detected images
         edgydir = pathlib.Path("./temp/")
