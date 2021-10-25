@@ -1,10 +1,11 @@
-import os
+import time
 
 import numpy as np
 import tensorflow as tf
 
 
 def detect_occupancy(image_path):
+    start_time = time.time()
     from persona_trainer import create_model
     class_names = ['nocc', 'occ']
     print(tf.version.VERSION)
@@ -49,11 +50,18 @@ def detect_occupancy(image_path):
     # score[0] is nocc | score[1] is occ
     quorum_scores = [score[0][0] + score[1][0] + score[2][0], score[0][1] + score[1][1] + score[2][1]]
     judgement = ''
-    confidence = np.abs(quorum_scores[0] - quorum_scores[1])
 
-    if quorum_scores[0] > quorum_scores[1]:
+    # negative tug shows occ, positive tug shows nocc
+    tug = quorum_scores[0] - quorum_scores[1]
+    print(tug)
+
+    if tug > 0:
         judgement = 'nocc'
+        confidence = np.sum(quorum_scores[0])/3
     else:
         judgement = 'occ'
+        confidence = np.sum(quorum_scores[1])/3
 
-    print("The quorum thinks that the spot is {} with a combined confidence of {:.2f}%.".format(judgement, confidence))
+    print("The quorum thinks that the spot is {} with a combined confidence of {:.2f}%. The tug is {:.4f}".format(judgement, confidence*100, tug))
+    print('occupancy detection took %s seconds to run' % (time.time() - start_time))
+    return judgement, confidence, tug
