@@ -55,7 +55,6 @@ def detect_occupancy(image_path, debug=False):
 
     # negative tug shows occ, positive tug shows nocc
     tug = quorum_scores[0] - quorum_scores[1]
-    print(tug)
 
     if tug > 0:
         judgement = 'nocc'
@@ -68,4 +67,7 @@ def detect_occupancy(image_path, debug=False):
         print("The quorum thinks that the spot is {} with a combined confidence of {:.2f}%. The tug is {:.4f}".format(
             judgement, confidence * 100, tug))
         print('occupancy detection took %s seconds to run' % (time.time() - start_time))
-    return judgement, confidence, tug, think_time
+    # Convert tug from a tensor to a float
+    scalar_tug = tug.numpy()
+
+    return judgement, confidence, scalar_tug, think_time
