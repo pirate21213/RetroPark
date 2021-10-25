@@ -272,7 +272,7 @@ def create_model():
                   metrics=['accuracy'])
     return model
 
-
-train_model("Tom")
-train_model("Jerry")
-train_model("Tweety")
+# Test Cases
+# train_model("Tom")
+# train_model("Jerry")
+# train_model("Tweety")
