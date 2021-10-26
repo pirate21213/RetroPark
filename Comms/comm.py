@@ -85,6 +85,8 @@ def receive_file(save_path):
     # and writing to the file stream
     progress = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=1024)
     print("Opening file locally at {}".format(out_filename))
+
+    # populate data
     with open(out_filename, "wb+") as f:
         while True:
             # read 1024 bytes from the socket (receive)
