@@ -47,4 +47,4 @@ def get_newest_dataset(search_dir):
 
 # Test Case
 # print(get_newest_dataset('./remote_db/'))
-print(import_occupancy_data('./remote_db/'))
+# print(import_occupancy_data('./remote_db/'))
