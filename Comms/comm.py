@@ -74,18 +74,18 @@ def receive_file(save_path):
         os.makedirs(save_path)
 
     # remove absolute path if there is
-    filename = os.path.basename(filename)
-    print("base filename is {}".format(filename))
-    filename = os.path.join(save_path, filename)
-    print("saving file to {}".format(filename))
+    base_filename = os.path.basename(filename)
+    print("base filename is {}".format(base_filename))
+    out_filename = os.path.join(save_path, base_filename)
+    print("saving file to {}".format(out_filename))
     # convert to integer
     filesize = int(filesize)
 
     # start receiving the file from the socket
     # and writing to the file stream
     progress = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=1024)
-    print("Opening file locally at {}".format(filename))
-    with open(filename, "wb+") as f:
+    print("Opening file locally at {}".format(out_filename))
+    with open(out_filename, "wb+") as f:
         while True:
             # read 1024 bytes from the socket (receive)
             bytes_read = client_socket.recv(BUFFER_SIZE)
