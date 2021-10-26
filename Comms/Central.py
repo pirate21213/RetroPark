@@ -51,7 +51,6 @@ with open(filename, "wb") as f:
             # file transmitting is done
             break
         # write to the file the bytes we just received
-        print(bytes_read)
         f.write(bytes_read)
         # update the progress bar
         progress.update(len(bytes_read))
