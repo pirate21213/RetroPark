@@ -105,6 +105,7 @@ def receive_file(save_path):
     client_socket.close()
     # close the server socket
     s.close()
+    return True
 
 
 if __name__ == "__main__":
