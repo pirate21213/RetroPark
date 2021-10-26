@@ -36,10 +36,11 @@ if not os.path.exists('./localdb/'):
 # Create db
 f = open('./localdb/{}.csv'.format(time), 'w', newline='')
 writer = csv.writer(f)
+writer.writerow(['spotID', 'judgement', 'confidence', 'tug', 'dtime', 'tom_conf', 'jerry_conf', 'tweety_conf'])
 for img in imgs:
-    judgement, confidence, tug, dtime = detect.detect_occupancy(img)
+    judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf = detect.detect_occupancy(img)
     print("=>{} is {} with {:2f} confidence, the tug is {:4f}.".format(img, judgement, confidence, tug))
-    writer.writerow([cut.get_spotID(img), judgement, confidence, tug, dtime])
+    writer.writerow([cut.get_spotID(img), judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf])
 f.close()
 shutil.rmtree('./temp_img')
 
