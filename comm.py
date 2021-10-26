@@ -89,7 +89,7 @@ def receive_file(save_path):
     print("Opening file locally at {}".format(out_filename))
 
     # populate data
-    with open(out_filename, "wb+") as f:
+    with open(out_filename, "wb") as f:
         while True:
             # read 1024 bytes from the socket (receive)
             bytes_read = client_socket.recv(BUFFER_SIZE)
