@@ -75,7 +75,7 @@ def receive_file(save_path):
         os.makedirs(save_path)
 
     # remove absolute path if there is
-    filename.replace('\\', '/')
+    filename = filename.replace('\\', '/')
     base_filename = os.path.basename(filename)
     print("base filename is {}".format(base_filename))
     out_filename = os.path.join(save_path, base_filename)
