@@ -41,11 +41,10 @@ def get_newest_dataset(search_dir):
         if datetime.strptime(datasets[i], '%H_%M_%S') > timestamp:
             timestamp = datetime.strptime(datasets[i], '%H_%M_%S')
     # print('{}{}_{}_{}.csv'.format(path, timestamp.hour, timestamp.minute, timestamp.second))
-    timestamp = '{}{}_{}_{}.csv'.format(path, timestamp.hour, timestamp.minute, timestamp.second)
+    timestamp = '{}{:02d}_{:02d}_{:02d}.csv'.format(path, timestamp.hour, timestamp.minute, timestamp.second)
     return timestamp
 
 
 # Test Case
-# print(import_occupancy_data('C:/Users/Patrick/Documents/GitHub/RetroPark/localdb/14_40_44.csv'))
 # print(get_newest_dataset('./remote_db/'))
-#print(import_occupancy_data('./Front End Display/remote_db/'))
+print(import_occupancy_data('./remote_db/'))
