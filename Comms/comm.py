@@ -101,6 +101,7 @@ def receive_file(save_path):
             # update the progress bar
             progress.update(len(bytes_read))
             # print("Filename: ".format(filename))
+    f.flush()
     # close the client socket
     client_socket.close()
     # close the server socket
