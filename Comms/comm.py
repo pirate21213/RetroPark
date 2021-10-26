@@ -8,7 +8,7 @@ import os
 import argparse
 
 SEPARATOR = "<SEPARATOR>"
-BUFFER_SIZE = 1024 * 4  # 4KB
+BUFFER_SIZE = 1024
 
 
 def send_file(filename, host, port):
@@ -46,9 +46,6 @@ def receive_file(save_path):
     # device's IP address
     SERVER_HOST = "0.0.0.0"
     SERVER_PORT = 5001
-    # receive 4096 bytes each time
-    # BUFFER_SIZE = 4096
-    # SEPARATOR = "<SEPARATOR>"
 
     # create the server socket
     # TCP socket
@@ -101,7 +98,7 @@ def receive_file(save_path):
             # update the progress bar
             progress.update(len(bytes_read))
             # print("Filename: ".format(filename))
-    f.flush()
+        f.flush()
     # close the client socket
     client_socket.close()
     # close the server socket
