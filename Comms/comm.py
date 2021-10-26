@@ -49,6 +49,7 @@ def receive_file(save_path):
     # receive 4096 bytes each time
     # BUFFER_SIZE = 4096
     # SEPARATOR = "<SEPARATOR>"
+
     # create the server socket
     # TCP socket
     s = socket.socket()
@@ -70,6 +71,11 @@ def receive_file(save_path):
     print("Received...")
     filename, filesize = received.split(SEPARATOR)
     print("filename is {}, filesize is {}".format(filename, filesize))
+
+    # Create path if not existent
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+
     # remove absolute path if there is
     filename = os.path.basename(filename)
     print("base filename is {}".format(filename))
@@ -77,6 +83,7 @@ def receive_file(save_path):
     print("saving file to {}".format(filename))
     # convert to integer
     filesize = int(filesize)
+
     # start receiving the file from the socket
     # and writing to the file stream
     progress = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=1024)
@@ -99,3 +106,15 @@ def receive_file(save_path):
     # close the server socket
     s.close()
 
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Simple File Sender")
+    parser.add_argument("file", help="File name to send")
+    parser.add_argument("host", help="The host/IP address of the receiver")
+    parser.add_argument("-p", "--port", help="Port to use, default is 5001", default=5001)
+    args = parser.parse_args()
+    file = args.file
+    host = args.host
+    port = args.port
+    send_file(file, host, port)
