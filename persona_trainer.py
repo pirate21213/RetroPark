@@ -214,7 +214,7 @@ def edgify_image_from_path(imagepath, output_path, style="Canny"):
     # Blur the image for better edge detection
     image = cv2.imread(imagepath)
     image = edgify_image(image, style)
-    cv2.imwrite(image, output_path)
+    cv2.imwrite(output_path, image)
     return output_path
 
 
