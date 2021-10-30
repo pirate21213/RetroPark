@@ -26,13 +26,21 @@ def detect_occupancy(image_path, debug=False):
     tweety_probability = tf.keras.Sequential([tweety, tf.keras.layers.Softmax()])
 
     # isolate the image into its own dataset
-    img = tf.keras.preprocessing.image.load_img(image_path, target_size=(640, 320))
-    img_array = tf.keras.preprocessing.image.img_to_array(img)
-    img_array = tf.expand_dims(img_array, 0)
+    tom_img = tf.keras.preprocessing.image.load_img(image_path, target_size=(640, 320))
+    tom_img_array = tf.keras.preprocessing.image.img_to_array(tom_img)
+    tom_img_array = tf.expand_dims(tom_img_array, 0)
+
+    jerry_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Canny"), target_size=(640, 320))
+    jerry_img_array = tf.keras.preprocessing.image.img_to_array(jerry_img)
+    jerry_img_array = tf.expand_dims(jerry_img_array, 0)
+
+    tweety_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Sobel"), target_size=(640, 320))
+    tweety_img_array = tf.keras.preprocessing.image.img_to_array(tweety_img)
+    tweety_img_array = tf.expand_dims(tweety_img_array, 0)
 
     # Run the predictions
-    predictions = [tom_probability.predict(img_array), jerry_probability.predict(img_array),
-                   tweety_probability.predict(img_array)]
+    predictions = [tom_probability.predict(tom_img_array), jerry_probability.predict(jerry_img_array),
+                   tweety_probability.predict(tweety_img_array)]
     score = [tf.nn.softmax(predictions[0][0]), tf.nn.softmax(predictions[1][0]), tf.nn.softmax(predictions[2][0])]
     if debug:
         print(
