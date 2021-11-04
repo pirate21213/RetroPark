@@ -41,6 +41,13 @@ while True:
         dcol2.metric(label="Vacant Spots", value="{}/{}".format(vacant_spots, total_spots), delta_color="inverse")
         dcol3.metric(label="Occupied Spots", value="{}/{}".format(occupied_spots, total_spots), delta_color="inverse")
 
+        # Spacers
+        dcol3.markdown("")
+
+        # Load lot diagram
+        lot_diag = Image.open('./Front End Display/.current_diag.jpg')
+        st.image(lot_diag, caption="Current Spot Occupancy as of {}.".format(timestamp))
+
 
         # Create Expanders
         st.subheader("Explore More of Our Project")
