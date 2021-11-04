@@ -210,6 +210,14 @@ def edgify_image(image, style="Canny"):
     return image
 
 
+def edgify_image_from_path(imagepath, output_path, style="Canny"):
+    # Blur the image for better edge detection
+    image = cv2.imread(imagepath)
+    image = edgify_image(image, style)
+    cv2.imwrite(output_path, image)
+    return output_path
+
+
 def test_persona(image_path, persona, class_names):
     if persona == "Jerry":
         n = cv2.imread(image_path)
