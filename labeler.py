@@ -35,7 +35,7 @@ for file in glob.glob("{}*.jpg".format(args["input_folder"])):
 
 for i in range(0, len(images)):
     # Create timestamp
-    time = datetime.now().strftime("%H_%M_%S")
+    time = datetime.now().strftime("%H_%M_%S_%f")
     while True:
         # display the image
         cv2.namedWindow("[U]noccupied or [O]ccupied")

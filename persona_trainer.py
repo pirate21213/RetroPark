@@ -5,7 +5,8 @@ import numpy as np
 import os
 import pathlib
 import cv2
-# import PIL
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 
 # from tensorflow import keras
@@ -13,7 +14,6 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 print("Tensorflow version:", tf.__version__)
 
 data_dir = pathlib.Path("./Bulk Dataset/")
@@ -21,8 +21,8 @@ image_count = len(list(data_dir.glob('*/*.jpg')))
 print("Num Images: %s" % image_count)
 
 batch_size = 32
-img_height = 640
-img_width = 320
+img_height = 64
+img_width = 32
 
 
 def train_model(persona):

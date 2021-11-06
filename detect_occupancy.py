@@ -5,6 +5,8 @@ import tensorflow as tf
 
 tf.get_logger().setLevel('ERROR')
 
+TARGET_SIZE = (64, 32)
+
 
 def detect_occupancy(image_path, debug=False):
     start_time = time.time()
@@ -26,15 +28,15 @@ def detect_occupancy(image_path, debug=False):
     tweety_probability = tf.keras.Sequential([tweety, tf.keras.layers.Softmax()])
 
     # isolate the image into its own dataset
-    tom_img = tf.keras.preprocessing.image.load_img(image_path, target_size=(640, 320))
+    tom_img = tf.keras.preprocessing.image.load_img(image_path, target_size=TARGET_SIZE)
     tom_img_array = tf.keras.preprocessing.image.img_to_array(tom_img)
     tom_img_array = tf.expand_dims(tom_img_array, 0)
 
-    jerry_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Canny"), target_size=(640, 320))
+    jerry_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Canny"), target_size=TARGET_SIZE)
     jerry_img_array = tf.keras.preprocessing.image.img_to_array(jerry_img)
     jerry_img_array = tf.expand_dims(jerry_img_array, 0)
 
-    tweety_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Sobel"), target_size=(640, 320))
+    tweety_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Sobel"), target_size=TARGET_SIZE)
     tweety_img_array = tf.keras.preprocessing.image.img_to_array(tweety_img)
     tweety_img_array = tf.expand_dims(tweety_img_array, 0)
 
