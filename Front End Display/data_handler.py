@@ -1,4 +1,5 @@
 import csv
+import cv2
 import os.path
 from datetime import datetime
 
@@ -45,6 +46,60 @@ def get_newest_dataset(search_dir):
     return timestamp
 
 
+def generate_overview(occupancy_data):
+    # Grab total spots from csv
+    total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp = import_occupancy_data(occupancy_data)
+    color = (255, 0, 0)  # BGR
+    lot_diag = cv2.imread("./Parking_Diagram.jpg")
+
+    # Load diag csv for display location data
+    diag_loc = list(csv.reader(open('./diagram_locations.csv')))
+    diag_loc.pop(0)  # throws out header
+    print(diag_loc)
+
+    # Load main occupancy data for individual spot data
+    filepath = get_newest_dataset(occupancy_data)
+    data = list(csv.reader(open(filepath)))
+    data.pop(0)
+
+    for index in range(len(data)):
+        if data[index][1] == "nocc":
+            # This created a color gradient based on confidence, not a fan
+            # color = (float(data[index][2])*255.0, 0, 100 - (float(data[index][2])*100.0))     # BGR
+            if abs(float(data[index][3])) > 0.6:
+                color = (255, 188, 149)
+            else:
+                color = (255, 205, 175)
+            print("nocc", data[index][0], color)
+
+            # Find the correlating spotID and set the status
+            for search in diag_loc:
+                if search[5] == data[index][0]:
+                    lot_diag = cv2.rectangle(lot_diag, (int(search[1]), int(search[2])),
+                                             (int(search[3]), int(search[4])), color, -1)
+        else:
+            # Find the correlating spotID and set the status
+            if abs(float(data[index][3])) > 0.6:
+                color = (0, 0, 0)
+            else:
+                color = (61, 61, 61)
+            print("occ", data[index][0], color)
+            for search in diag_loc:
+                if search[5] == data[index][0]:
+                    lot_diag = cv2.rectangle(lot_diag, (int(search[1]), int(search[2])),
+                                             (int(search[3]), int(search[4])), color, -1)
+
+    # After populating the occ data, fill in which spots are considered inaccessible (spotID = -1)
+    for search in diag_loc:
+        hazard_color = (14, 208, 208)  # BGR
+        if int(search[5]) == -1:
+            print("hazard at: ", search[0])
+            lot_diag = cv2.rectangle(lot_diag, (int(search[1]), int(search[2])), (int(search[3]), int(search[4])),
+                                     hazard_color, -1)
+    cv2.imwrite('./.current_diag.jpg', lot_diag)
+
+
 # Test Case
 # print(get_newest_dataset('./remote_db/'))
 # print(import_occupancy_data('./remote_db/'))
+# generate_overview('./remote_db/')
