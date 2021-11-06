@@ -15,6 +15,10 @@ cloud_ip = '3.17.147.11'
 port = 5001
 
 while True:
+    # Clear temp folder if unsafe shutdown happened before
+    if os.path.exists("./temp_img"):
+        shutil.rmtree('./temp_img')
+
     # Take photo
     # TODO when set up on raspi, right now its just hardcoded
     raw_input_image = './Test Images/Ximenes_Phone_IR_closecenter.jpg'
@@ -26,8 +30,8 @@ while True:
     imgs = []
     for img in glob.glob("{}*.jpg".format(temp_img)):
         imgs.append(img)
-
     imgs = cut.sort_images_by_spotID(imgs)
+    print(imgs)
 
     # Create timestamp and database file
     time = datetime.now().strftime("%H_%M_%S")

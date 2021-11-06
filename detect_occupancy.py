@@ -1,7 +1,9 @@
 import time
 import os
+import shutil
 import numpy as np
 import tensorflow as tf
+from persona_trainer import edgify_image_from_path
 
 tf.get_logger().setLevel('ERROR')
 
@@ -32,13 +34,18 @@ def detect_occupancy(image_path, debug=False):
     tom_img_array = tf.keras.preprocessing.image.img_to_array(tom_img)
     tom_img_array = tf.expand_dims(tom_img_array, 0)
 
-    jerry_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Canny"), target_size=TARGET_SIZE)
+    jerry_path = edgify_image_from_path(image_path, r'./tempedgy/', style="Canny")
+    jerry_img = tf.keras.preprocessing.image.load_img(jerry_path, target_size=TARGET_SIZE)
     jerry_img_array = tf.keras.preprocessing.image.img_to_array(jerry_img)
     jerry_img_array = tf.expand_dims(jerry_img_array, 0)
 
-    tweety_img = tf.keras.preprocessing.image.load_img(edgify_image_from_path(imagepath, './tempi/cannyedge.jpg', style="Sobel"), target_size=TARGET_SIZE)
+    tweety_path = edgify_image_from_path(image_path, r'./tempedgy/', style="Sobel")
+    tweety_img = tf.keras.preprocessing.image.load_img(tweety_path, target_size=TARGET_SIZE)
     tweety_img_array = tf.keras.preprocessing.image.img_to_array(tweety_img)
     tweety_img_array = tf.expand_dims(tweety_img_array, 0)
+
+    # Clean up temp directories
+    shutil.rmtree('./tempedgy/')
 
     # Run the predictions
     predictions = [tom_probability.predict(tom_img_array), jerry_probability.predict(jerry_img_array),
