@@ -9,7 +9,8 @@ import detect_occupancy as detect
 import comm as comm
 
 # Declare system paths
-calib = './Calibration Files/IR_closecenter_location.csv'
+# calib = './Calibration Files/IR_closecenter_location.csv'
+calib = './Sorties/Subscale1/calib.csv'
 temp_img = './temp_img/'
 cloud_ip = '3.17.147.11'
 port = 5001
@@ -21,7 +22,8 @@ while True:
 
     # Take photo
     # TODO when set up on raspi, right now its just hardcoded
-    raw_input_image = './Test Images/Ximenes_Phone_IR_closecenter.jpg'
+    # raw_input_image = './Test Images/Ximenes_Phone_IR_closecenter.jpg'
+    raw_input_image = './Sorties/Subscale1/Raw/GOPR1855.JPG'
 
     # Process photo using calibration data
     cut.cut_image(raw_input_image, calib, temp_img)
@@ -54,4 +56,9 @@ while True:
     shutil.rmtree('./temp_img')
 
     # Upload to Cloud Database
-    comm.send_file(out_file, cloud_ip, port)
+    try:
+        comm.send_file(out_file, cloud_ip, port)
+    except ConnectionRefusedError:
+        print("Connection refused, is the cloud listener on?")
+    except ConnectionError:
+        print("Connection error")
