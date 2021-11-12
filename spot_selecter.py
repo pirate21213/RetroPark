@@ -54,7 +54,7 @@ def select_spot(event, x, y, flags, param):
 # Load the image and whatnot (Hardcoded for testing)
 # image = cv2.imread("./Test Images/Ximenes_Phone.JPG")
 image = cv2.imread(args["image"])
-scale_percent = 30  # percent of original size
+scale_percent = 100  # percent of original size
 width = int(image.shape[1] * scale_percent / 100)  # scale the image based on the percentage
 height = int(image.shape[0] * scale_percent / 100)
 dim = (width, height)
