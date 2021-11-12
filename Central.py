@@ -118,6 +118,7 @@ def generate_full_overview():
 
 
 while True:
+    print("Generating Overview...")
     generate_overview('./Front End Display/remote_db/')
     comm.receive_file('./Front End Display/remote_db/')
     time.sleep(5)
