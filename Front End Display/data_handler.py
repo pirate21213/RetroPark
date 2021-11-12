@@ -118,4 +118,4 @@ def generate_full_overview():
 # print(get_newest_dataset('./remote_db/'))
 # print(import_occupancy_data('./remote_db/'))
 # generate_overview('./remote_db/')
-generate_full_overview()
+# generate_full_overview()
