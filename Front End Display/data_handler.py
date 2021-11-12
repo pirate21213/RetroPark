@@ -23,7 +23,6 @@ def import_occupancy_data(data_dir):
         else:
             vacant_spots += 1
     occupancy_percent = occupied_spots / total_spots * 100.0
-    generate_overview(data_dir)
 
     return total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp
 
@@ -54,7 +53,7 @@ def generate_overview(occupancy_data):
     lot_diag = cv2.imread("./Parking_Diagram_Ex.jpg")
 
     # Load diag csv for display location data
-    diag_loc = list(csv.reader(open('./diagram_locations_ex.csv')))
+    diag_loc = list(csv.reader(open('./Front End Display/diagram_locations_ex.csv')))
     diag_loc.pop(0)  # throws out header
     print(diag_loc)
 
@@ -97,7 +96,8 @@ def generate_overview(occupancy_data):
             print("hazard at: ", search[0])
             lot_diag = cv2.rectangle(lot_diag, (int(search[1]), int(search[2])), (int(search[3]), int(search[4])),
                                      hazard_color, -1)
-    cv2.imwrite('./.current_diag.jpg', lot_diag)
+
+    cv2.imwrite('./Front End Display/.current_diag.jpg', lot_diag)
 
 
 def generate_full_overview():
