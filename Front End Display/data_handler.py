@@ -23,6 +23,7 @@ def import_occupancy_data(data_dir):
         else:
             vacant_spots += 1
     occupancy_percent = occupied_spots / total_spots * 100.0
+    generate_overview(data_dir)
 
     return total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp
 

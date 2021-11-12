@@ -9,7 +9,9 @@ from PIL import Image
 
 import data_handler as dh
 
-st.set_page_config(page_title="RetroPark - CIED EE/CpE Senior Design Team 5", page_icon="./Front End Display/RetroPark_Logo_mini.jpg", menu_items={'Get Help': None,'Report a bug': None,'About': None})
+st.set_page_config(page_title="RetroPark - CIED EE/CpE Senior Design Team 5",
+                   page_icon="./Front End Display/RetroPark_Logo_mini.jpg",
+                   menu_items={'Get Help': None, 'Report a bug': None, 'About': None})
 # Update frequency in seconds
 update_freq = 30
 
@@ -33,8 +35,11 @@ while True:
         next_update_time = next_update_time.strftime("%H:%M:%S")
 
         with st.spinner("Grabbing Occupancy Data..."):
-            total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp = dh.import_occupancy_data('./Front End Display/remote_db/')
-        st.success("Occupancy Data Up to Date as of {}, Last Checked at {}, Checking again at {}".format(timestamp, latest_update_time, next_update_time))
+            total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp = dh.import_occupancy_data(
+                './Front End Display/remote_db/')
+        st.success("Occupancy Data Up to Date as of {}, Last Checked at {}, Checking again at {}".format(timestamp,
+                                                                                                         latest_update_time,
+                                                                                                         next_update_time))
         dcol1, dcol2, dcol3, dcol4 = st.columns(4)
         # Update this in real time
         dcol1.metric(label="Current Occupancy %", value="{:.2f}%".format(occupancy_percent), delta_color="inverse")
@@ -47,7 +52,6 @@ while True:
         # Load lot diagram
         lot_diag = Image.open('./Front End Display/.current_diag.jpg')
         st.image(lot_diag, caption="Current Spot Occupancy as of {}.".format(timestamp))
-
 
         # Create Expanders
         st.subheader("Explore More of Our Project")
@@ -157,11 +161,9 @@ while True:
         while delta_update < update_freq:
             with update_container.container():
                 st.markdown("T- Next Update")
-                st.markdown("{} seconds".format(update_freq-delta_update))
-                st.progress(delta_update/update_freq)
+                st.markdown("{} seconds".format(update_freq - delta_update))
+                st.progress(delta_update / update_freq)
                 time.sleep(1)
                 delta_update += 1
                 update_container.empty()
     data_container.empty()
-
-
