@@ -50,10 +50,10 @@ def generate_overview(occupancy_data):
     # Grab total spots from csv
     total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp = import_occupancy_data(occupancy_data)
     color = (255, 0, 0)  # BGR
-    lot_diag = cv2.imread("./Parking_Diagram.jpg")
+    lot_diag = cv2.imread("./Parking_Diagram_Ex.jpg")
 
     # Load diag csv for display location data
-    diag_loc = list(csv.reader(open('./diagram_locations.csv')))
+    diag_loc = list(csv.reader(open('./diagram_locations_ex.csv')))
     diag_loc.pop(0)  # throws out header
     print(diag_loc)
 
@@ -99,7 +99,23 @@ def generate_overview(occupancy_data):
     cv2.imwrite('./.current_diag.jpg', lot_diag)
 
 
+def generate_full_overview():
+    # Grab total spots from csv
+    color = (255, 0, 0)  # BGR
+    lot_diag = cv2.imread("./Parking_Diagram_Ex.jpg")
+
+    # Load diag csv for display location data
+    diag_loc = list(csv.reader(open('./diagram_locations_ex.csv')))
+    diag_loc.pop(0)  # throws out header
+    print(diag_loc)
+    for search in diag_loc:
+        lot_diag = cv2.rectangle(lot_diag, (int(search[1]), int(search[2])),
+                             (int(search[3]), int(search[4])), color, -1)
+    cv2.imwrite('./.current_diag.jpg', lot_diag)
+
+
 # Test Case
 # print(get_newest_dataset('./remote_db/'))
 # print(import_occupancy_data('./remote_db/'))
 # generate_overview('./remote_db/')
+generate_full_overview()
