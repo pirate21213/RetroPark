@@ -84,8 +84,8 @@ def generate_overview(occupancy_data):
             if abs(float(data[index][3])) > 0.6:
                 color = (0, 0, 0)
             else:
-                # color = (61, 61, 61)
-                color = (255, 205, 175)
+                color = (61, 61, 61)
+                # color = (255, 205, 175)
             print("occ", data[index][0], color)
             for search in diag_loc:
                 if search[5] == data[index][0]:
