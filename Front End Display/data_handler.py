@@ -24,7 +24,7 @@ def import_occupancy_data(data_dir):
             vacant_spots += 1
     occupancy_percent = occupied_spots / total_spots * 100.0
 
-    return total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp
+    return total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp, filepath
 
 
 def get_newest_dataset(search_dir):

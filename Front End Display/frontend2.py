@@ -1,4 +1,5 @@
 import time
+import os
 import datetime as dt
 
 import pandas as pd
@@ -35,7 +36,7 @@ while True:
         next_update_time = next_update_time.strftime("%H:%M:%S")
 
         with st.spinner("Grabbing Occupancy Data..."):
-            total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp = dh.import_occupancy_data(
+            total_spots, vacant_spots, occupied_spots, occupancy_percent, timestamp, current_filepath = dh.import_occupancy_data(
                 './Front End Display/remote_db/')
         st.success("Occupancy Data Up to Date as of {}, Last Checked at {}, Checking again at {}".format(timestamp,
                                                                                                          latest_update_time,
@@ -55,11 +56,12 @@ while True:
 
         # Create Expanders
         st.subheader("Explore More of Our Project")
-        map_display = st.expander(label="Show Map")
-        diagnostic = st.expander(label="Neural Net Diagnostics")
+        # map_display = st.expander(label="Show Map")
+        current_data = st.expander(label="Raw Data")
         about_per = st.expander(label="About Neural Net Personas")
         about_rt = st.expander(label="About RetroPark")
         about_us = st.expander(label="About Team 5")
+        diagnostic = st.expander(label="Neural Net Statistics")
         schematics = st.expander(label="Functional Block and Software Diagram")
         acknowledge = st.expander(label="Acknowledgements")
 
@@ -119,21 +121,18 @@ while True:
             col3.markdown("*Tweety - Sobel X/Y Edge Detection*")
             col3.markdown(
                 "Tweety is a bit of a wildcard; while he also performs an edge detection algorithm on the image before evaluating it, he instead uses a Sobel X/Y edge detection. To a human, the resulting image tends to look like jumbled garbage, but somewhere deep in the mind of Tweety he is able to take that garbage and tell you if there is a car present.")
-        # Create Tiles
-        m = folium.Map(location=[29.581953, -98.619457], zoom_start=20, width=350, no_touch=True,
-                       zoom_control=False)
-        tile = folium.TileLayer(
-            tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            attr='Esri',
-            name='Esri Satellite',
-            overlay=False,
-            control=True
-        ).add_to(m)
-        with map_display:
-            # TODO This section needs some fleshing out
-            folium_static(m)
-            st.markdown(
-                "This section is intended to give an idea of how the map data could be presented with a fully deployed system, however in the scope of senior design all of the occupancy data is simulated excluding Ximenes Parking Lot, which is using the data from the small scale demo.")
+        with current_data:
+            st.dataframe(pd.read_csv(current_filepath))
+            st.markdown("Shown above is the raw data that is received from the POM, each spotID has data regarding its status. Explanations of each column is listed below. ")
+            st.markdown("**spotID:** Assigned unique ID per spot")
+            st.markdown("**Judgement:** Whether or not the spot is occupied (occ) or not occupied (nocc)")
+            st.markdown("**Confidence:** Average confidence in the answer from the Quorum")
+            st.markdown("**Tug:** Result of the tug algorithm that chose the resulting Judgement, Negative is occ/Positive is nocc. The Magnitude represents a form of confidence.")
+            st.markdown("**dtime:** How long it took for the POM to calculate the occupancy status")
+            st.markdown("**tom_conf:** Tom's specific confidence in the given answer")
+            st.markdown("**jerry_conf:** Jerry's specific confidence in the given answer")
+            st.markdown("**tweety_conf:** Tweety's specific confidence in the given answer")
+
         with diagnostic:
             dcol1, dcol2 = st.columns(2)
 
@@ -145,13 +144,17 @@ while True:
         with schematics:
             functional = Image.open("./Front End Display/functional.png")
             software = Image.open("./Front End Display/software.png")
+            server_software = Image.open("./Front End Display/serversoftware.png")
             st.image(functional, caption="Functional Block Diagram")
             st.image(software, caption="Software Block Diagram")
+            st.image(server_software, caption="Server Software Block Diagram")
         with acknowledge:
             st.header("Special Thanks to the Following")
             st.write("Professor Patrick Benavidez")
             st.write("Chad Webster")
             st.write("Alberto Samaniego")
+            st.write("David Kuenstler")
+            st.write("Rachael Printz")
             st.write("UTSA College of Engineering and Integrated Design")
             st.write("Department of Electrical and Computer Engineering")
 
