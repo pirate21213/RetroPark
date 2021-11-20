@@ -67,4 +67,4 @@ def sort_images_by_spotID(image_list):
 
 
 def get_spotID(image):
-    return int(str(os.path.basename(image)).split(sep='_', maxsplit=1)[0])
+    return int(str(os.path.basename(image)).split(sep='_', maxsplit=1)[0].replace('\\', ''))

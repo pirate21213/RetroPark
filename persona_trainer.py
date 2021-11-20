@@ -25,7 +25,7 @@ img_height = 64
 img_width = 32
 
 
-def train_model(persona):
+def train_model(persona, epochs=10):
     if persona == "Tom":
         print("Retraining Tom")
         train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -54,13 +54,17 @@ def train_model(persona):
 
         model = create_model()
 
-        epochs = 10
         history = model.fit(
             train_ds,
             validation_data=val_ds,
             epochs=epochs
         )
+        print("Saving Tom weights...")
         model.save_weights("./Personalities/Tom/Tom")
+        print("Tom weights saved.")
+        print("Saving Tom model...")
+        tf.saved_model.save(model, "./Personalities/Tom/")
+        print("Tom model saved.")
 
     elif persona == "Jerry":
         print("Retraining Jerry")
@@ -107,7 +111,6 @@ def train_model(persona):
 
         model = create_model()
 
-        epochs = 10
         history = model.fit(
             train_ds,
             validation_data=val_ds,
@@ -158,7 +161,6 @@ def train_model(persona):
 
         model = create_model()
 
-        epochs = 10
         history = model.fit(
             train_ds,
             validation_data=val_ds,
@@ -268,14 +270,14 @@ def create_model():
 
     model = Sequential([
         tf.keras.layers.experimental.preprocessing.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
+        layers.Conv2D(8, 3, padding='same', activation='relu'),
+        layers.MaxPooling2D(),
         layers.Conv2D(16, 3, padding='same', activation='relu'),
         layers.MaxPooling2D(),
         layers.Conv2D(32, 3, padding='same', activation='relu'),
         layers.MaxPooling2D(),
-        layers.Conv2D(64, 3, padding='same', activation='relu'),
-        layers.MaxPooling2D(),
         layers.Flatten(),
-        layers.Dense(128, activation='relu'),
+        layers.Dense(64, activation='relu'),
         layers.Dense(num_classes)
     ])
 

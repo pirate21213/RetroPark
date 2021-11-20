@@ -7,11 +7,11 @@ import shutil
 import image_cutter as cut
 import detect_occupancy as detect
 import comm as comm
-from webcam import update_photo
+# from webcam import update_photo
 
 # Declare system paths
-# calib = './Calibration Files/IR_closecenter_location.csv'
-calib = './Sorties/Live/calib.csv'
+calib = './Calibration Files/IR_closecenter_location.csv'
+# calib = './Sorties/Live/calib.csv'
 temp_img = './temp_img/'
 cloud_ip = '3.17.147.11'
 port = 5001
@@ -23,9 +23,9 @@ while True:
 
     # Take photo
     # TODO when set up on raspi, right now its just hardcoded
-    # raw_input_image = './Test Images/Ximenes_Phone_IR_closecenter.jpg'
-    update_photo()
-    raw_input_image = './Sorties/Live/Raw/update.jpg'
+    raw_input_image = './Test Images/Ximenes_Phone_IR_closecenter.jpg'
+    #update_photo()
+    # raw_input_image = './Sorties/Live/Raw/update.jpg'
 
     # Process photo using calibration data
     cut.cut_image(raw_input_image, calib, temp_img)
