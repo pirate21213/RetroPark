@@ -4,6 +4,7 @@ import shutil
 import csv
 import numpy as np
 import tensorflow as tf
+import tqdm
 from persona_trainer import edgify_image_from_path
 from image_cutter import get_spotID
 
@@ -121,7 +122,7 @@ def detect_occupancy_list(image_list, out_file, debug=False):
     f = open(out_file, 'w', newline='')
     writer = csv.writer(f)
     writer.writerow(['spotID', 'judgement', 'confidence', 'tug', 'dtime', 'tom_conf', 'jerry_conf', 'tweety_conf'])
-    for image_path in image_list:
+    for image_path in tqdm(image_list):
         start_time = time.time()
         # isolate the image into its own dataset
         tom_img = tf.keras.preprocessing.image.load_img(image_path, target_size=TARGET_SIZE)
