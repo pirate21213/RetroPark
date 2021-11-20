@@ -198,6 +198,7 @@ def detect_occupancy_keras_list(image_list, out_file, debug=False):
     start_time = time.time()
     class_names = ['nocc', 'occ']
 
+    print("Summoning Quorum...")
     tom = tf.keras.models.load_model("./Personalities/Tom/", compile=True)
     jerry = tf.keras.models.load_model("./Personalities/Jerry/", compile=True)
     tweety = tf.keras.models.load_model("./Personalities/Tweety/", compile=True)
