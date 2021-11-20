@@ -46,15 +46,16 @@ while True:
         os.makedirs('./localdb/')
 
     out_file = './localdb/{}.csv'.format(time)
+    detect.detect_occupancy_keras_list(imgs, out_file, debug=True)
     # Create db
-    f = open(out_file, 'w', newline='')
-    writer = csv.writer(f)
-    writer.writerow(['spotID', 'judgement', 'confidence', 'tug', 'dtime', 'tom_conf', 'jerry_conf', 'tweety_conf'])
-    for img in imgs:
-        judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf = detect.detect_occupancy(img)
-        print("=>{} is {} with {:2f} confidence, the tug is {:4f}.".format(img, judgement, confidence, tug))
-        writer.writerow([cut.get_spotID(img), judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf])
-    f.close()
+    # f = open(out_file, 'w', newline='')
+    # writer = csv.writer(f)
+    # writer.writerow(['spotID', 'judgement', 'confidence', 'tug', 'dtime', 'tom_conf', 'jerry_conf', 'tweety_conf'])
+    # for img in imgs:
+    #     judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf = detect.detect_occupancy(img)
+    #     print("=>{} is {} with {:2f} confidence, the tug is {:4f}. dtime={:4f}".format(img, judgement, confidence, tug, dtime))
+    #     writer.writerow([cut.get_spotID(img), judgement, confidence, tug, dtime, tom_conf, jerry_conf, tweety_conf])
+    # f.close()
     shutil.rmtree('./temp_img')
 
     # Upload to Cloud Database

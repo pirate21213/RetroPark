@@ -63,7 +63,7 @@ def train_model(persona, epochs=10):
         model.save_weights("./Personalities/Tom/Tom")
         print("Tom weights saved.")
         print("Saving Tom model...")
-        tf.saved_model.save(model, "./Personalities/Tom/")
+        tf.keras.models.save_model(model, "./Personalities/Tom/")
         print("Tom model saved.")
 
     elif persona == "Jerry":
@@ -117,6 +117,10 @@ def train_model(persona, epochs=10):
             epochs=epochs
         )
         model.save_weights("./Personalities/Jerry/Jerry")
+        print("Saving Jerry model...")
+        tf.keras.models.save_model(model, "./Personalities/Jerry/")
+        print("Jerry model saved.")
+
     elif persona == "Tweety":
         print("Retraining Tweety")
         # make the temporary folder that clones the dataset and performs edge detection on them
@@ -167,6 +171,9 @@ def train_model(persona, epochs=10):
             epochs=epochs
         )
         model.save_weights("./Personalities/Tweety/Tweety")
+        print("Saving Tweety model...")
+        tf.keras.models.save_model(model, "./Personalities/Tweety/")
+        print("Tweety model saved.")
         shutil.rmtree('./temp')
 
     acc = history.history['accuracy']
