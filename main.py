@@ -11,7 +11,7 @@ import comm as comm
 import pomcam
 
 calib = './Calibration Files/IR_closecenter_location.csv'
-# calib = './Sorties/Live/calib.csv'
+#calib = './Sorties/Live/calib.csv'
 temp_img = './temp_img/'
 cloud_ip = '3.17.147.11'
 port = 5001
@@ -46,7 +46,7 @@ while True:
         os.makedirs('./localdb/')
 
     out_file = './localdb/{}.csv'.format(time)
-    detect.detect_occupancy_keras_list(imgs, out_file, debug=True)
+    detect.detect_occupancy_keras_list(imgs, out_file)
     # Create db
     # f = open(out_file, 'w', newline='')
     # writer = csv.writer(f)
