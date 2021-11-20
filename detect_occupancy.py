@@ -10,6 +10,13 @@ from image_cutter import get_spotID
 tf.get_logger().setLevel('ERROR')
 
 TARGET_SIZE = (64, 32)
+print("Summoning Quorum...")
+
+# Placed here to speed up detect_occupancy_keras_list, the other three functions would also benefit from this but as
+# they aren't being used, I won't clutter the top with it
+tom = tf.keras.models.load_model("./Personalities/Tom/", compile=True)
+jerry = tf.keras.models.load_model("./Personalities/Jerry/", compile=True)
+tweety = tf.keras.models.load_model("./Personalities/Tweety/", compile=True)
 
 
 def detect_occupancy(image_path, debug=False):
@@ -197,11 +204,6 @@ def detect_occupancy_list(image_list, out_file, debug=False):
 def detect_occupancy_keras_list(image_list, out_file, debug=False):
     start_time = time.time()
     class_names = ['nocc', 'occ']
-
-    print("Summoning Quorum...")
-    tom = tf.keras.models.load_model("./Personalities/Tom/", compile=True)
-    jerry = tf.keras.models.load_model("./Personalities/Jerry/", compile=True)
-    tweety = tf.keras.models.load_model("./Personalities/Tweety/", compile=True)
 
     f = open(out_file, 'w', newline='')
     writer = csv.writer(f)
