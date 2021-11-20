@@ -80,7 +80,7 @@ def train_model(persona, epochs=10):
             n = cv2.imread(image)
             n = edgify_image(n)
             cv2.imwrite(os.path.join("./temp/nocc", os.path.basename(image)), n)
-            print(os.path.join("./temp/occ", os.path.basename(image)))
+            print(os.path.join("./temp/nocc", os.path.basename(image)))
 
         # Override Jerry's datapath to be the canny edge detected images
         edgydir = pathlib.Path("./temp/")
