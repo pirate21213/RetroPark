@@ -128,11 +128,13 @@ def train_model(persona, epochs=10):
         os.makedirs("./temp/nocc")
         for image in glob.glob("Bulk Dataset/occ/*.jpg"):
             n = cv2.imread(image)
+            print("Edgifying...")
             n = edgify_image(n, "Sobel")
             cv2.imwrite(os.path.join("./temp/occ", os.path.basename(image)), n)
             print(os.path.join("./temp/occ", os.path.basename(image)))
         for image in glob.glob("Bulk Dataset/nocc/*.jpg"):
             n = cv2.imread(image)
+            print("Edgifying...")
             n = edgify_image(n, "Sobel")
             cv2.imwrite(os.path.join("./temp/nocc", os.path.basename(image)), n)
 
