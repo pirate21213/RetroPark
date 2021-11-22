@@ -124,7 +124,7 @@ def train_model(persona, epochs=10, skip_preprocess=False):
     elif persona == "Tweety":
         print("Retraining Tweety")
         # make the temporary folder that clones the dataset and performs edge detection on them
-        if skip_preprocess:
+        if not skip_preprocess:
             print("Preprocessing...")
             os.makedirs("./temp/occ")
             os.makedirs("./temp/nocc")
