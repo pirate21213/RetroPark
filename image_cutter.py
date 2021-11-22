@@ -54,13 +54,14 @@ def sort_images_by_spotID(image_list):
     # Although, this does have some merit as it is capable of sorting duplicates of the same spotID
     sorted_image_list = []
     num = 0
+    print("Sorting spotIDs to [ascending].")
     while len(image_list) != len(sorted_image_list):
-        print("looking for number {}".format(num))
+        # print("looking for number {}".format(num))
         for img in image_list:
             spotID = get_spotID(img)
             #print(get_spotID(img))
             if spotID == num:
-                print("Found it, sorting...")
+                # print("Found it, sorting...")
                 sorted_image_list.append(img)
         num += 1
     return sorted_image_list

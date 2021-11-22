@@ -275,11 +275,12 @@ def detect_occupancy_keras_list(image_list, out_file, debug=False):
             print('occupancy detection took %s seconds to run' % (time.time() - start_time))
         # Convert tug from a tensor to a float
         scalar_tug = tug.numpy()
+        current_spot = get_spotID(image_path)
         print(
-            "=>{} is {} with {:2f} confidence, the tug is {:4f}. dtime={:4f}".format(image_path, judgement, confidence,
+            "spotID=>[{}] is [{}] with {:2f} confidence, the tug is [{:4f}]. dtime=[{:4f}]".format(current_spot, judgement, confidence,
                                                                                      tug, dtime))
         writer.writerow(
-            [get_spotID(image_path), judgement, confidence, scalar_tug, dtime, tom_conf, jerry_conf, tweety_conf])
+            [current_spot, judgement, confidence, scalar_tug, dtime, tom_conf, jerry_conf, tweety_conf])
     f.close()
 
 

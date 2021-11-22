@@ -10,8 +10,8 @@ import comm as comm
 # from webcam import update_photo
 import pomcam
 
-calib = './Calibration Files/IR_closecenter_location.csv'
-#calib = './Sorties/Live/calib.csv'
+#calib = './Calibration Files/IR_closecenter_location.csv'
+calib = './Sorties/Live/calib.csv'
 temp_img = './temp_img/'
 cloud_ip = '3.17.147.11'
 port = 5001
@@ -35,7 +35,7 @@ while True:
     for img in glob.glob("{}*.jpg".format(temp_img)):
         imgs.append(img)
     imgs = cut.sort_images_by_spotID(imgs)
-    print(imgs)
+    print("Total spots to be evaluated [{}].".format(len(imgs)))
 
     # Create timestamp and database file
     time = datetime.now().strftime("%H_%M_%S")
