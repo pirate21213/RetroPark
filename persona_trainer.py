@@ -25,7 +25,7 @@ img_height = 64
 img_width = 32
 
 
-def train_model(persona, epochs=10):
+def train_model(persona, epochs=10, skip_preprocess=False):
     if persona == "Tom":
         print("Retraining Tom")
         train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -124,19 +124,23 @@ def train_model(persona, epochs=10):
     elif persona == "Tweety":
         print("Retraining Tweety")
         # make the temporary folder that clones the dataset and performs edge detection on them
-        os.makedirs("./temp/occ")
-        os.makedirs("./temp/nocc")
-        for image in glob.glob("Bulk Dataset/occ/*.jpg"):
-            n = cv2.imread(image)
-            print("Edgifying...")
-            n = edgify_image(n, "Sobel")
-            cv2.imwrite(os.path.join("./temp/occ", os.path.basename(image)), n)
-            print(os.path.join("./temp/occ", os.path.basename(image)))
-        for image in glob.glob("Bulk Dataset/nocc/*.jpg"):
-            n = cv2.imread(image)
-            print("Edgifying...")
-            n = edgify_image(n, "Sobel")
-            cv2.imwrite(os.path.join("./temp/nocc", os.path.basename(image)), n)
+        if skip_preprocess:
+            print("Preprocessing...")
+            os.makedirs("./temp/occ")
+            os.makedirs("./temp/nocc")
+            for image in glob.glob("Bulk Dataset/occ/*.jpg"):
+                n = cv2.imread(image)
+                print("Edgifying...")
+                n = edgify_image(n, "Sobel")
+                cv2.imwrite(os.path.join("./temp/occ", os.path.basename(image)), n)
+                print(os.path.join("./temp/occ", os.path.basename(image)))
+            for image in glob.glob("Bulk Dataset/nocc/*.jpg"):
+                n = cv2.imread(image)
+                print("Edgifying...")
+                n = edgify_image(n, "Sobel")
+                cv2.imwrite(os.path.join("./temp/nocc", os.path.basename(image)), n)
+        else:
+            print("Skipping preprocess. WARNING: If this was unintentional, Tweety will not be trained on the correct data.")
 
         # Override Tweety's datapath to be the canny edge detected images
         edgydir = pathlib.Path("./temp/")
